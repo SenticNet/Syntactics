@@ -3,6 +3,7 @@
 This repository contains the multitask learning model proposed in [Granular Syntax Processing with Multi-Task and Curriculum Learning](https://link.springer.com/article/10.1007/s12559-024-10320-1). 
 
 ## Requirements
+* pytorch
 * flair 0.13.0
 * fastnlp 0.7.0
 
