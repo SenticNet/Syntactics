@@ -25,22 +25,17 @@ import os
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
-import sys
 import numpy as np
-import json
 import torch
 import random
-import copy
 from fastNLP import DataSet, Vocabulary, Trainer, Tester
-from fastNLP import GradientClipCallback, WarmupCallback, LRScheduler
+from fastNLP import GradientClipCallback, WarmupCallback
 from fastNLP import SpanFPreRecMetric, BucketSampler, AccuracyMetric, ClassifyFPreRecMetric
-from modules.transformerEmbedding import TransformerCharEmbed
 from modules.multitaskTagger import MultitaskTagger
-from modules.pipe import MultitaskPipe, Conll2000Pipe, MultitaskFlairPipe, SentencesPipe
+from modules.pipe import MultitaskFlairPipe
 from modules.multitask_trainer import Multitask_Trainer
 from modules.multitask_tester import Multitask_Tester
 from flair.embeddings import FlairEmbeddings, WordEmbeddings, CharacterEmbeddings, StackedEmbeddings
-from modules.flair import FlairProcess
 
 torch.manual_seed(args.seed)
 torch.cuda.manual_seed_all(args.seed)
@@ -92,7 +87,7 @@ def main(args):
                 dev_data=data_bundle.get_dataset('p_dev'), 
                 test_data=[data_bundle.get_dataset('p_test'), data_bundle.get_dataset('test')],
                 metrics=[acc_metric, p_metric], c_metrics=[c_metric, acc_metric], callbacks=callbacks, 
-                device=device, test_use_tqdm=False, use_tqdm=True, print_every=50, 
+                device=device, test_use_tqdm=False, use_tqdm=True, print_every=args.print_every, 
                 save_path=None, logger_path=args.logger_path)
     multi_trainer.train(load_best_model=args.load_trained)
     
